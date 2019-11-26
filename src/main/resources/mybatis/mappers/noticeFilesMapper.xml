@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="noticeFilesMapper">
+  
+ 	<insert id="fileWrite" parameterType="FilesVO">
+ 		insert into noticefiles values (file_seq.nextval, #{num}, #{fname},#{oname})
+ 	</insert>
+ 	
+<!--  	<select id="fileList" parameterType="Integer" resultType="NoticeFilesVO">
+ 		select * from noticefiles where num = #{num} 	
+ 	</select> -->
+ 	<!-- result map 사용해서 필요없어짐 -->
+ 	
+ 	<delete id="fileDelete" parameterType="FilesVO">
+ 		delete noticefiles where fnum = #{fnum}
+ 	</delete>
+ 
+	<select id="fileSelect" resultType="FilesVO" parameterType="FilesVO">
+		select * from noticefiles 
+		where fnum = #{fnum} 
+	</select>
+
+ 
+ 
+  </mapper>

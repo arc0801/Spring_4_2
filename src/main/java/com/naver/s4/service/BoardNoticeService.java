@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +33,8 @@ public class BoardNoticeService implements BoardService {
 	@Inject
 	private NoticeFilesDAO noticeFilesDAO;
 	
+	@Value("${notice}")
+	private String board;
 	
 	//summer 
 	public String summerFile(MultipartFile file, HttpSession session) throws Exception {
@@ -72,7 +75,7 @@ public class BoardNoticeService implements BoardService {
 		//BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
 		//List<NoticeFilesVO> ar = noticeFilesDAO.fileList(boardVO.getNum());
 		//boardNoticeVO.setFiles(ar);
-		//reselt map이라는 매퍼설정 이후 위가 필요없어짐
+		//reselt map�씠�씪�뒗 留ㅽ띁�꽕�젙 �씠�썑 �쐞媛� �븘�슂�뾾�뼱吏�
 		
 		//return boardNoticeVO;
 		
@@ -83,8 +86,9 @@ public class BoardNoticeService implements BoardService {
 	//@Transactional
 	@Override
 	public int boardWrite(BoardVO boardVO, MultipartFile [] file, HttpSession session) throws Exception {
-		String realpath = session.getServletContext().getRealPath("resources/upload/notice");
+		String realpath = session.getServletContext().getRealPath("resources/upload/"+board);
 		String filename = "";
+		System.out.println(realpath);
 		
 		session.setAttribute("realpath", realpath);
 		
@@ -135,9 +139,9 @@ public class BoardNoticeService implements BoardService {
 		
 		BoardNoticeVO bVO = (BoardNoticeVO)boardVO;
 		
-		System.out.println("원래 :"+ bVO.getFiles().size());
+		System.out.println("�썝�옒 :"+ bVO.getFiles().size());
 		System.out.println(file);
-		System.out.println("추가 :"+file.length);
+		System.out.println("異붽� :"+file.length);
 		
 		FilesVO filesVO = new FilesVO(); 
 		filesVO.setNum(boardVO.getNum());

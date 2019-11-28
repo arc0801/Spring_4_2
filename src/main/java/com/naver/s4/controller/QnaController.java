@@ -5,10 +5,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,13 +31,21 @@ public class QnaController {
 	private BoardQnaService boardQnaService;
 	//
 	
+	@Value("#{db['qna']}")
+	private String board;
+	
+	@ModelAttribute("board")
+	public String getBoard() {
+		return board;
+	}
+	
 	@GetMapping("fileDown")
 	public ModelAndView fileDown(FilesVO filesVO) throws Exception  {
 		filesVO = boardQnaService.fileSelect(filesVO);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("file", filesVO);
-		mv.addObject("board", "qna");
+		
 		mv.setViewName("fileDown");
 		
 		return mv;
@@ -67,7 +77,7 @@ public class QnaController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("list", ar);
 		mv.addObject("pager", pager);
-		mv.addObject("board", "qna");
+		
 
 		mv.setViewName("board/boardList");
 		
@@ -77,7 +87,7 @@ public class QnaController {
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.GET)
 	public ModelAndView boardWrite() throws Exception {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("board", "qna");
+		
 		mv.setViewName("board/boardWrite");
 		
 		return mv;
@@ -88,10 +98,10 @@ public class QnaController {
 		int result = boardQnaService.boardWrite(boardVO, file, session);
 	
 		ModelAndView mv = new ModelAndView();
-		String msg = "작성 실패";
+		String msg = "�옉�꽦 �떎�뙣";
 		
 		if(result > 0) {
-			msg = "작성 성공";
+			msg = "�옉�꽦 �꽦怨�";
 			mv.setViewName("redirect:./qnaList");
 		} else {
 			mv.addObject("msg", msg);
@@ -107,10 +117,10 @@ public class QnaController {
 		int result = boardQnaService.boardDelete(boardVO);
 		
 		ModelAndView mv = new ModelAndView();
-		String msg = "삭제 실패";
+		String msg = "�궘�젣 �떎�뙣";
 		
 		if(result > 0) {
-			msg = "삭제 성공";
+			msg = "�궘�젣 �꽦怨�";
 			mv.setViewName("redirect:./qnaList");
 		} else {
 			mv.addObject("msg", msg);
@@ -125,7 +135,7 @@ public class QnaController {
 	@RequestMapping("qnaSelect")
 	public ModelAndView boardSelect(BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("board", "qna");
+		
 		mv.addObject("dto", (BoardQnaVO)boardQnaService.boardSelect(boardVO)); 
 		mv.setViewName("board/boardSelect");
 		
@@ -140,7 +150,7 @@ public class QnaController {
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("dto", boardQnaService.boardSelect(boardVO));
-		mv.addObject("board", "qna");
+		
 		mv.setViewName("board/boardUpdate");
 		
 		return mv;
@@ -150,10 +160,10 @@ public class QnaController {
 	public ModelAndView boardUpdate(BoardVO boardVO, MultipartFile [] file, HttpSession session) throws Exception {
 		int result = boardQnaService.boardUpdate(boardVO, file, session);
 		ModelAndView mv = new ModelAndView();
-		String msg = "수정 실패";
+		String msg = "�닔�젙 �떎�뙣";
 		
 		if(result > 0) {
-			msg = "수정 성공";
+			msg = "�닔�젙 �꽦怨�";
 			mv.setViewName("redirect:./qnaList");
 		} else {
 			mv.addObject("msg", msg);
@@ -167,7 +177,7 @@ public class QnaController {
 	@RequestMapping(value = "qnaReply", method = RequestMethod.GET)
 	public ModelAndView boardReply(int num) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("board", "qna");
+		
 		mv.addObject("num", num);
 		mv.addObject("board", "qna");
 		mv.setViewName("board/boardReply");
@@ -181,10 +191,10 @@ public class QnaController {
 		int result = boardQnaService.boardReply(boardVO);
 		
 		ModelAndView mv = new ModelAndView();
-		String msg = "댓글 추가 실패";
+		String msg = "�뙎湲� 異붽� �떎�뙣";
 		
 		if(result > 0) {
-			msg = "댓글 추가 성공";
+			msg = "�뙎湲� 異붽� �꽦怨�";
 			mv.setViewName("redirect:./qnaList");
 		} else {
 			mv.addObject("msg", msg);

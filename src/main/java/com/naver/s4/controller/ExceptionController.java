@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
-@ControllerAdvice //예외처리용 controller annotation
+//@ControllerAdvice //예외처리용 controller annotation
 public class ExceptionController {
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)

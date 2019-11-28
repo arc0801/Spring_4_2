@@ -95,20 +95,20 @@
 
 				<tbody>
 					<tr class="b3">
-						<td>${dto.num}</td>
-						<td class="b4">${dto.title}</td>
-						<td>${dto.writer}</td>
-						<td>${dto.reg_date}</td>
-						<td>${dto.hit}</td>
+						<td>${boardVO.num}</td>
+						<td class="b4">${boardVO.title}</td>
+						<td>${boardVO.writer}</td>
+						<td>${boardVO.reg_date}</td>
+						<td>${boardVO.hit}</td>
 					</tr>
 
 					<tr class="b3">
 						<td class="b5" colspan="5" style="text-align: left; vertical-align: top; padding: 25px; height:300px;">
-							${dto.contents}
+							${boardVO.contents}
 						</td>
 					</tr>
 					
-						<c:forEach items="${dto.files}" var="file">
+						<c:forEach items="${boardVO.files}" var="file">
 					<tr style="background-color: white; border-bottom: 5px rgb(240, 240, 240) solid;">
 						<td colspan="5" style="text-align: left; vertical-align: top; padding: 5px;">
 						<a href="./fileDown?fnum=${file.fnum}">${file.oname}</a>					
@@ -119,7 +119,7 @@
 				</tbody>
 			</table>
 			
-			<c:if test="${member.id eq dto.writer}">
+			<c:if test="${member.id eq boardVO.writer}">
 				<button class="btn btn-default" id="upd">UPDATE</button>
 				<button class="btn btn-default" id="del">DELETE</button>
 			</c:if>
@@ -127,7 +127,7 @@
 			<a href="./${board}Delete?num=${dto.num}">DELETE</a> --%>
 			
 			<c:catch>
-			<c:if test="${not empty dto.ref}">
+			<c:if test="${not empty boardVO.ref}">
 				<button class="btn btn-default" id="rep">REPLY</button>
 			</c:if>
 			</c:catch>

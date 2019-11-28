@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,9 +32,13 @@ public class NoticeController {
 	@Inject
 	private BoardNoticeService boardNoticeService;
 	
-	@Value("${notice}")
+	@Value("#{db['notice']}")
 	private String board;
 	
+	@ModelAttribute("board")
+	public String getBoard() {
+		return board;
+	}
 	
 	//summer file
 	@PostMapping("summerFile")
@@ -75,7 +80,7 @@ public class NoticeController {
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("file", filesVO);
-		mv.addObject("board", "notice");
+		
 		mv.setViewName("fileDown");
 		
 		return mv; 
@@ -108,7 +113,7 @@ public class NoticeController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("list", ar);
 		mv.addObject("pager", pager);
-		mv.addObject("board", "notice");
+		
 		
 		mv.setViewName("board/boardList");
 		
@@ -119,7 +124,7 @@ public class NoticeController {
 	@RequestMapping(value = "noticeWrite", method = RequestMethod.GET)
 	public ModelAndView boardWrite() throws Exception{
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("board", "notice");
+		
 		mv.setViewName("board/boardWrite");
 		
 		return mv;
@@ -185,8 +190,8 @@ public class NoticeController {
 		//�쐞吏��쐞洹� : what you see is what you get (WYSIWYG)
 		boardVO.setContents(boardVO.getContents().replace("\r\n", "<br>"));
 		
-		mv.addObject("board", "notice");
-		mv.addObject("dto", boardVO);
+		
+		mv.addObject("boardVO", boardVO);
 		mv.setViewName("board/boardSelect");
 		
 		return mv; 
@@ -202,7 +207,7 @@ public class NoticeController {
 		//BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
 		//mv.addObject("count", boardNoticeVO.getFiles().size());
 
-		mv.addObject("board", "notice");
+		
 		mv.addObject("dto", boardNoticeService.boardSelect(boardVO));
 		mv.setViewName("board/boardUpdate");
 		
